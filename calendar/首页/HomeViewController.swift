@@ -19,14 +19,14 @@ class HomeViewController: BaseViewController ,UIScrollViewDelegate  {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        if traitCollection.forceTouchCapability == .Available {
+        if traitCollection.forceTouchCapability == .Available {
             self.registerForPreviewingWithDelegate(self, sourceView: self.view)
-//        }
+        }
         
-        let rightBtn = UIButton.init(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-        rightBtn .setImage(UIImage.init(named: "Icon_Settings"), forState: .Normal )
-        rightBtn.addTarget(self, action: Selector("showSettingDataViewController"), forControlEvents: UIControlEvents.TouchUpInside)
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: rightBtn)
+        let rightBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        rightBtn .setImage(UIImage(named: "Icon_Settings"), forState: .Normal )
+        rightBtn.addTarget(self, action: #selector(showSettingDataViewController), forControlEvents: UIControlEvents.TouchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBtn)
        
         HttpRequest.getHomePageTopData { ( array : [HomePageTopData]?) -> Void in
             if let arr = array {
@@ -116,7 +116,7 @@ extension  HomeViewController : UICollectionViewDataSource ,UICollectionViewDele
             }
             return collectionResuableView
         }
-        let collectionResuableView = UICollectionReusableView.init()
+        let collectionResuableView = UICollectionReusableView()
         return collectionResuableView
 
     }
@@ -127,8 +127,6 @@ extension  HomeViewController : UICollectionViewDataSource ,UICollectionViewDele
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize{
             return CGSize(width:  view.frame.size.width, height: section == 0 ? (view.frame.size.width * 3.5  / 3.75 ) : 0 )
-
-
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize{

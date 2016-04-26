@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
         <!--SettingData-->
@@ -32,7 +32,6 @@
                                         <subviews>
                                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ybT-zc-Yek">
                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="600"/>
-                                                <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="80" id="xJ9-BE-r0t"/>
                                                 </constraints>
@@ -42,13 +41,11 @@
                                             </containerView>
                                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sim-vI-XT0">
                                                 <rect key="frame" x="80" y="0.0" width="600" height="600"/>
-                                                <animations/>
                                                 <connections>
                                                     <segue destination="t5y-Nz-tYP" kind="embed" identifier="DetailViewSegue" id="4Xb-Cl-PWW"/>
                                                 </connections>
                                             </containerView>
                                         </subviews>
-                                        <animations/>
                                         <color key="backgroundColor" red="0.4039215686" green="0.95686274510000002" blue="0.40784313729999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstItem="ybT-zc-Yek" firstAttribute="leading" secondItem="6eq-Xj-d5F" secondAttribute="leading" id="57y-Sx-mCh"/>
@@ -60,7 +57,6 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <animations/>
                                 <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="6eq-Xj-d5F" firstAttribute="height" secondItem="ZfA-q6-1Bi" secondAttribute="height" id="Qh0-xk-M8E"/>
@@ -75,7 +71,6 @@
                                 </connections>
                             </scrollView>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Sim-vI-XT0" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="31J-3W-x1W"/>

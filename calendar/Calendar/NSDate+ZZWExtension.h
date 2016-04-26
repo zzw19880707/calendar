@@ -21,5 +21,5 @@
  *
  *  @return 上班的类型
  */
--(int)getTodayTypebyCurrentDate:(NSDate *)currentDate num:(int)num;
+-(NSInteger)getTodayTypebyCurrentDate:(NSDate *)currentDate num:(NSInteger )num;
 @end

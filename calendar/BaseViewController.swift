@@ -11,11 +11,17 @@ import UIKit
 class BaseViewController: UIViewController {
     var hamburgerView: HamburgerView?
     var hamburgerViewNeedVertical = false
+    
+    ///抽象类，需要重新刷新数据
+    func needReloadData() -> Void {
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         //添加一个按钮
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "hamburgerViewTapped")
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hamburgerViewTapped))
         hamburgerView = HamburgerView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
         hamburgerView!.addGestureRecognizer(tapGestureRecognizer)
         if hamburgerViewNeedVertical {
@@ -55,5 +61,17 @@ class BaseViewController: UIViewController {
 //    [self.navigationController.navigationBar lt_setBackgroundColor:[color colorWithAlphaComponent:0]];
 //    }
 //    }
+}
+
+
+    // MARK: - Action
+extension BaseViewController {
+    func alertMessage(string : String ){
+        let alertController = UIAlertController.init(title: "提示", message: string, preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction.init(title: "确定", style: .Default, handler: nil))
+        presentViewController(alertController, animated: true, completion: nil)
+        
+    }
+
 }
 

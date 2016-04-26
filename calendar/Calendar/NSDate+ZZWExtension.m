@@ -20,7 +20,7 @@
  *
  *  @return 上班的类型
  */
--(int)getTodayTypebyCurrentDate:(NSDate *)currentDate num:(int)num{
+-(NSInteger)getTodayTypebyCurrentDate:(NSDate *)currentDate num:(NSInteger)num{
     //    时间差（天）
     NSTimeInterval t = [[self beginingOfDay] timeIntervalSinceDate:[currentDate beginingOfDay]]/(60 * 60 *24 );
     int count = t / num ;
@@ -37,7 +37,7 @@
      */
 //    NSDate *newDate = [[NSDate alloc]initWithTimeInterval:count *6 *60 *60 *24 sinceDate:[currentDate beginingOfDay]];
 //    [self setCurrentDate:newDate];
-    return (int)t;
+    return t;
 }
 
 /******************************************

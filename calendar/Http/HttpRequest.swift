@@ -10,7 +10,38 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
-class HttpRequest {
+class HttpRequest  {
+    class func getWeatherData( callBack : ( [DayWearther]? , NowWeather? ,String?) ->Void ,city : String)  {
+        var weartherData : [DayWearther]?
+        var nowWearther : NowWeather?
+
+        let parameters = ["area":city , "needMoreDay" : "1" , "needIndex": "1" , "needAlarm" : "1" , "need3HourForcast" : "1" ]
+//
+        Alamofire.request(.GET , HTTP_GET_WEATHER_DATA , parameters: parameters , encoding: .URL , headers: ["apikey" : "7ef693d2c822db59f28e1b43c2977c11"]  ).responseJSON { (response) -> Void in
+            if let json = response.result.value {
+                let data = JSON(json)
+                let status = data["showapi_res_code"]
+                if status.int == 0 {
+                    let body = data["showapi_res_body"]
+                    let now = body["now"]
+                    
+
+                    let modelTool = DictModelManager.sharedManager
+                    nowWearther = modelTool.objectWithDictionary(now.dictionaryObject! , cls: NowWeather.self) as? NowWeather
+                    print(nowWearther!)
+                    
+                    
+                }else{
+                    callBack(nil,nil,data["showapi_res_error"].string)
+                }
+            }else{
+                callBack(nil,nil,"出错了")
+            }
+        }
+        
+    }
+    
+    
     class func getHomePageTopData(callBack :[HomePageTopData]? -> Void  ) -> Void {
         var homeData : [HomePageTopData]?
         
@@ -97,4 +128,5 @@ class HttpRequest {
 //            }
 //        }
     }
+    
 }

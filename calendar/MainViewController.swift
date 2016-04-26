@@ -7,7 +7,6 @@
 //
 
 import UIKit
-public let UD_DATA = "data"
 class MainViewController: UIViewController,UIScrollViewDelegate {
     
     ///底层的背景滚动视图
@@ -57,6 +56,8 @@ class MainViewController: UIViewController,UIScrollViewDelegate {
     func initViewController() {
         var nameArr = Array.init(count: 6, repeatedValue: "BaseViewController")
         nameArr[0] = "CalendarViewController"
+        nameArr[1] = "WeatherViewController"
+        nameArr[2] = "SportViewController"
         let baseNavigation = storyboard?.instantiateViewControllerWithIdentifier("Detail") as! UINavigationController
         let detailStoryboard = baseNavigation.topViewController?.storyboard
         for index in 0...5 {
@@ -71,7 +72,7 @@ class MainViewController: UIViewController,UIScrollViewDelegate {
         
         let userDeafults = NSUserDefaults.standardUserDefaults()
         
-        if let data = userDeafults.valueForKey(UD_DATA) {
+        if let data = userDeafults.valueForKey("UD_DATA") {
             print(data)
         } else{
             presentSettingDataViewController()
@@ -86,40 +87,8 @@ class MainViewController: UIViewController,UIScrollViewDelegate {
     }
     
     @IBAction func dissmiss(unwindSegue: UIStoryboardSegue){
-        var data =  (unwindSegue.sourceViewController as! SettingDataViewController).data
-        
-        let type = data["type"] as? [String]
-        var dataArr = [String]()
-        if let t = type {
-            switch t.count {
-                case 2 :
-                    for _ in 1...4 {
-                        dataArr += t
-                    }
-                case 3 :
-                    for _ in 1...3 {
-                        dataArr += t
-                    }
-                case 4 :
-                    for _ in 1...2 {
-                        dataArr += t
-                    }
-                case 5 :
-                    for _ in 1...2 {
-                        dataArr += t
-                    }
-            default :
-                dataArr += t
-                
-            }
-        }
-        data["newType"] = dataArr
-        
-        print(data)
-        let userDeafults = NSUserDefaults.standardUserDefaults()
-        userDeafults.setValue(data, forKey: UD_DATA)
-        userDeafults.synchronize()
-        
+        let currentVC = contentViewController?.viewControllers[0] as! BaseViewController
+        currentVC.needReloadData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -155,7 +124,7 @@ class MainViewController: UIViewController,UIScrollViewDelegate {
             if index == 6{
                 index = 0
             }else {
-                index++
+                index += 1
             }
             menuTableViewController?.showController(index)
         }

@@ -85,7 +85,7 @@
     }
     NSInteger numberOfPlaceholders = _maxDate - dates.count;
     
-    int type = [dates[0] getTodayTypebyCurrentDate:_beginDate num:_rowNum];
+    NSInteger type = [dates[0] getTodayTypebyCurrentDate:_beginDate num:_rowNum];
     NSInteger numberOfPlaceholdersForPrev = type ?  : _rowNum;
     
     for (int i = 0; i < numberOfPlaceholdersForPrev; i++) {

@@ -10,27 +10,39 @@ import UIKit
 
 class SettingDataViewController: UIViewController {
 
+    @IBOutlet weak var datePicker: UIDatePicker! 
     
-    var data = ["type":["白","白","白","夜","下","休"],"date": NSDate()]
-
+    var date : NSDate{
+        get {
+            return CalendarData.getDate()
+        }
+        set {
+            CalendarData.setDataByDate(newValue)
+        }
+    }
+    //转场时初始化
+    var collectionView : SettingSortCollectionView?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        datePicker.date = date
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView!.reloadData()
+        
+    }
     // MARK: - Action
     @IBAction func datePickerValueChange(sender: UIDatePicker) {
-        data["date"] = sender.date
-        print(data)
+        date = sender.date
     }
+    
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "settingSort" {
-            let settingDataVC = segue.destinationViewController as! SettingSortCollectionViewController
-            settingDataVC.dataArr = data["type"] as! Array<String>
-            
-        } else  if segue.identifier == "showDetail" {
-            let detailVC = segue.destinationViewController as! SettingDetailViewController
-            detailVC.dataArr = data["type"] as! Array<String>
+            collectionView = ( segue.destinationViewController as! UICollectionViewController ).collectionView as? SettingSortCollectionView
         }
 
     }
-    
-    
-
 }

@@ -8,85 +8,63 @@
 
 import UIKit
 
-
-
 class CalendarViewController: BaseViewController {
     
+    
+    var key : String = UD_DATA
+    
+    var transition : LHCustomModalTransition?
     var calendarView : FSCalendar?
     let tableView = UITableView()
     var tableData = [String]()
-    @IBOutlet weak var headerView: FSCalendarHeader!
+    lazy var headerView = FSCalendarHeader(frame: CGRect(x: 0, y: 64, width: UIScreen.mainScreen().bounds.size.width, height: 40 ))
     
     let appWidth : CGFloat = UIScreen.mainScreen().bounds.size.width
-    ///用于存放没个班次的类型
-    var types : [String] = []{
-        didSet{
-//            移除所有视图
-//            for view in topBgView.subviews {
-//                view.removeFromSuperview()
-//            }
-            
-//            for (index,value) in types.enumerate() {
-//
-//                let w = CGFloat(index) * appWidth
-//                let count = CGFloat(types.count)
-//                let label = UILabel(frame: CGRect(x: w / count, y: 0 , width: appWidth / count, height: topBgView.frame.size.height ) )
-//                label.text = value
-//                label.textAlignment = .Center
-//                topBgView.addSubview(label)
-//            }
-            
-        }
-    }
+    ///用于存放每个班次的类型
+    var types : [String] = []
     ///存放初始日期
     var beginDate : NSDate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let rightBtn = UIButton.init(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-        rightBtn .setImage(UIImage.init(named: "Icon_Settings"), forState: .Normal )
-        rightBtn.addTarget(self, action: Selector("showSettingDataViewController"), forControlEvents: UIControlEvents.TouchUpInside)
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: rightBtn)
-//        初始化表视图。用于显示底部信息
+        self.automaticallyAdjustsScrollViewInsets = false
+        let rightBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        rightBtn .setImage(UIImage(named: "Icon_Settings"), forState: .Normal )
+        rightBtn.addTarget(self, action: #selector(showSettingDataViewController), forControlEvents: UIControlEvents.TouchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBtn)
+        self.view.addSubview(headerView)
+        //        初始化表视图。用于显示底部信息
         initTableView()
 
+        if self.isMemberOfClass(CalendarViewController.self){
+            initMenu()
+        }
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        let userDeafults = NSUserDefaults.standardUserDefaults() 
-        
-        if let data = userDeafults.valueForKey(UD_DATA) as? [String:AnyObject] {
-            if let type = data["newType"] as? [String] {
-                beginDate = data["date"] as? NSDate
-                if type != types {
-                    types = type
-                    self.initCalendarView()
-                }
-            }else{
-                showSettingDataViewController()
-            }
-        }else {
-            showSettingDataViewController()
-        }
+        self.needReloadData()
     }
-    
+    ///重新刷新数据
+    override func needReloadData() {
+        let data = CalendarData.getDataByKey(key)
+        types = data[calDNewType] as! [String]
+        beginDate = data[calDDate] as? NSDate
+        self.initCalendarView()
+    }
     // MARK: - Action
     func showSettingDataViewController() {
         let mainVC = navigationController?.parentViewController as! MainViewController
         mainVC.presentSettingDataViewController()
     }
     
-    
-    
 }
 
 extension CalendarViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath){
-        if #available(iOS 8.0 , *){
+//        if #available(iOS 8.0 , *){
             cell.preservesSuperviewLayoutMargins = false
             cell.layoutMargins = UIEdgeInsetsZero
-        }
+//        }
         cell.separatorInset = UIEdgeInsetsZero
     }
     
@@ -98,10 +76,13 @@ extension CalendarViewController : UITableViewDataSource  {
         self.updateTableData(NSDate())
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.frame = CGRect(x: 0, y: 384, width: self.view.frame.size.width, height: self.view.frame.size.height - 384)
+        tableView.frame = CGRect(x: 0, y: 104, width: self.view.frame.size.width, height: self.view.frame.size.height - 104)
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         self.view.addSubview(tableView)
-        tableView.separatorInset = UIEdgeInsetsZero
+        tableView.tableFooterView = UIView()
+
+        tableView.backgroundColor = UIColor.clearColor()
+        tableView.separatorStyle = .None
 //        guard只有满足条件下才进行下一步 不满足则直接跳出程序
 //        if self.respondsToSelector(<#T##aSelector: Selector##Selector#>)
 //        if #available(iOS 8.0 , * ) {
@@ -115,10 +96,11 @@ extension CalendarViewController : UITableViewDataSource  {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell")
-        cell!.textLabel?.text = tableData[indexPath.row]
-        cell?.selectionStyle = .None
-        return cell!
+        let cell = tableView.dequeueReusableCellWithIdentifier("cell" ,forIndexPath: indexPath)
+        cell.textLabel?.text = tableData[indexPath.row]
+        cell.selectionStyle = .None
+        cell.backgroundColor = UIColor.clearColor()
+        return cell
     }
 }
 
@@ -129,23 +111,25 @@ extension CalendarViewController : FSCalendarDataSource {
             calendarView!.removeFromSuperview()
         }
 
-        calendarView = FSCalendar(frame: CGRect(x: 0, y: 104, width: self.view.frame.size.width, height: 280), rowNum: types.count , beginDate: beginDate!)
+        calendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 280), rowNum: types.count , beginDate: beginDate!)
         self.view.addSubview(calendarView!)
+        self.view.bringSubviewToFront(self.headerView)
         calendarView?.header = headerView
         calendarView?.weekSymbols = types
         calendarView?.flow = .Vertical
         calendarView?.dataSource = self
         calendarView?.delegate = self
+        tableView.tableHeaderView = calendarView
         
     }
     func calendar(calendar: FSCalendar!, subtitleForDate date: NSDate!) -> String! {
-        return SSLunarDate.init(date: date).dayString()
+        return SSLunarDate(date: date).dayString()
     }
     
     func calendar(calendar: FSCalendar!, hasEventForDate date: NSDate!) -> Bool {
         //        农历信息
-        let lunarMonth = SSLunarDate.init(date: date).monthString()
-        let lunarDay = SSLunarDate.init(date: date).dayString()
+        let lunarMonth = SSLunarDate(date: date).monthString()
+        let lunarDay = SSLunarDate(date: date).dayString()
         //        获取节日信息
         let lunarCalendar = LunarCalendar.getChineseHoliday(lunarMonth, day: lunarDay)
         if lunarCalendar != "无" {
@@ -167,8 +151,8 @@ extension CalendarViewController : FSCalendarDataSource {
         let year = dateFormate.stringFromDate(date) as NSString
         tableData.append(LunarCalendar.getYear(year.integerValue))
 //        农历信息
-        let lunarMonth = SSLunarDate.init(date: date).monthString()
-        let lunarDay = SSLunarDate.init(date: date).dayString()
+        let lunarMonth = SSLunarDate(date: date).monthString()
+        let lunarDay = SSLunarDate(date: date).dayString()
 //        星座
         let constellation = LunarCalendar.Constellation(date)
 //        第几周
@@ -201,5 +185,61 @@ extension CalendarViewController : FSCalendarDelegate {
         self.updateTableData(date)
         tableView.reloadData()
         
+    }
+}
+
+
+
+//弹出的按钮
+extension CalendarViewController : MenuDidSelectedDelegate {
+    func  initMenu()  {
+        let gooeyMenu = KYGooeyMenu(origin: CGPoint(x: self.view.frame.size.width - 10 - 50  , y: self.view.frame.size.height - 120 ), andDiameter: 50 , andDelegate: self, themeColor: UIColor.redColor())
+        gooeyMenu.menuDelegate = self;
+        gooeyMenu.radius = 50 / 3;//大圆的1/4
+        gooeyMenu.extraDistance = 30;
+        gooeyMenu.MenuCount = 5;
+        gooeyMenu.imgNameArr = ["calendar_add","calendar_edit","calendar_move","calendar_sub","calendar_add"]
+    }
+    
+    func menuDidSelected(index: CalendarMenu) {
+        print(index.rawValue)
+        switch index {
+        case .Add :
+            
+            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("CalendarAddViewController")
+//            self.transition = LHCustomModalTransition(modalViewController: vc)
+//            self.transition?.dragable = true
+//            vc!.transitioningDelegate = self.transition
+//            vc!.modalPresentationStyle = .Custom
+            self.presentViewController(vc!, animated: true, completion: nil)
+        case .Look:
+            let vc = CalendarSelectViewController()
+            vc.modalPresentationStyle = .Custom
+            vc.transitioningDelegate = self
+            self.presentViewController(vc, animated: true, completion: nil)
+        default: break
+            
+        }
+    }
+}
+
+extension CalendarViewController : UIViewControllerTransitioningDelegate {
+    func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -> UIPresentationController?{
+        return CalendarSelectTransition(presentedViewController: presented, presentingViewController: presenting)
+    }
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning?{
+        if presented.isMemberOfClass(CalendarSelectViewController.classForCoder()) {
+            return CalendarSelectTransitionDelegate(isPresenting: true)
+
+        }
+        return nil
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning?{
+        if dismissed.isMemberOfClass(CalendarSelectViewController.classForCoder()) {
+            return CalendarSelectTransitionDelegate(isPresenting: false)
+        }
+        return nil
     }
 }
