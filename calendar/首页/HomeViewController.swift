@@ -39,12 +39,6 @@ class HomeViewController: BaseViewController ,UIScrollViewDelegate  {
         
         
     }
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        if let scrollView = collectionView {
-            setNavigationBarColor(scrollView)
-        }
-    }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.barTintColor = UIColor.yellowColor()
@@ -60,25 +54,7 @@ class HomeViewController: BaseViewController ,UIScrollViewDelegate  {
         // Pass the selected object to the new view controller.
     }
     */
-    
 
-    
-    // MARK: - UIScrollViewDelegate
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        setNavigationBarColor(scrollView)
-    }
-    /// 根据偏移量设置navigationbar的颜色及透明度
-    func setNavigationBarColor (scrollView : UIScrollView){
-        let color = view.backgroundColor
-        let offsetY = scrollView.contentOffset.y
-        if offsetY > 10 {
-            let alpha = 1 - ((10 + 64 - offsetY ) / 64)
-            navigationController?.navigationBar.lt_setBackgroundColor(color?.colorWithAlphaComponent(alpha))
-        }else{
-            navigationController?.navigationBar.lt_setBackgroundColor(color?.colorWithAlphaComponent(0))
-        }
-    }
 }
 
 extension HomeViewController {
