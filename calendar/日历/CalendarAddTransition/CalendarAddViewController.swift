@@ -11,20 +11,21 @@ import UIKit
 //需要测试的dian
 /*
     1.新增一个用户
-        i.名字跟默认用户一致（不可能出现的，长度不够）    y
+        i.名字跟默认用户一致（不可能出现的，长度不够）       y
         ii.名字跟已有的一致                             y
-        iii.不输入名字                               y(完全不输入、输入以后删除)
-        iiii.正确的形式                              y
+        iii.不输入名字                                 y(完全不输入、输入以后删除)
+        iiii.正确的形式                                y
     2.修改一个用户
         i.默认用户修改(禁用)
-            I.全部删除
-            II.正确的模式（不修改名字）
-            III.修改成其他
+            I.名字全部删除 (禁用)                      y
+            II.正确的模式（不修改名字）                 y
+            III.修改成其他名字（禁用）                  y
+            IIII.选中其他日期                         y
         ii.后增用户修改
-            I.修改成默认用户
-            II.修改成已有df用户
-            III.全部删除
-            IIII.正确模式（不修改）
+            I.修改成默认用户                           y
+            II.修改成已有df用户                        y
+            III.全部删除                              y
+            IIII.正确模式（不修改）                     y
  
  
  */
@@ -93,7 +94,6 @@ class CalendarAddViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         dataArr = CalendarData.getTypeByKey(self.key)
 
         
@@ -114,7 +114,11 @@ class CalendarAddViewController: BaseViewController {
 //        移动
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongGesture(_:)))
         calendarView.addGestureRecognizer(longPressGesture)
-        calendarView.backgroundView = UIView()
+        
+        let bgView = UIView()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapGesture(_:)))
+        bgView.addGestureRecognizer(tap)
+        calendarView.backgroundView = bgView
         
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "取消", style: .Plain , target: self, action: #selector(closeVC))
@@ -146,17 +150,21 @@ class CalendarAddViewController: BaseViewController {
             //        编辑,填充数据
         else{
             textField.text = key
+            if key == UD_DATA {
+                textField.text = "我"
+            }
 //            设置选中
             let index = NSDate().getTodayTypebyCurrentDate(CalendarData.getDateByKey(key) ,num:  dataArr.count)
             let indexPath  = NSIndexPath(forRow: index, inSection: 0)
-            let cell = self.calendarView.cellForItemAtIndexPath(indexPath)
-            self.selectLayer.position = cell!.center
-            lastPostion = cell!.center
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64)( 0.2 * Double( NSEC_PER_SEC) )), dispatch_get_main_queue()){
+                let cell = self.calendarView.cellForItemAtIndexPath(indexPath)
+                self.selectLayer.position = cell!.center
+                self.lastPostion = cell!.center
+            }
         }
     }
     var _oldKey : String?
     
-    // WARNING:
     var key = UD_DATA {
         didSet {
             guard let _ = _oldKey else {
@@ -261,6 +269,10 @@ extension CalendarAddViewController {
 }
     // MARK: - Action
 extension CalendarAddViewController {
+    
+    func tapGesture (gesture : UITapGestureRecognizer) -> Void {
+        self.textField.resignFirstResponder()
+    }
 //    移动
     func handleLongGesture(gesture: UILongPressGestureRecognizer) {
         switch(gesture.state) {
@@ -347,15 +359,22 @@ extension CalendarAddViewController {
             if let text = textField.text where text != "" {
                 key = text
             }else {
-                key = "newInfo"
+                key = "new"
             }
         }
             //        修改
         else{
-            if let text = textField.text {
+            if let text = textField.text where text != "" {
                 key = text
+                if text == "我" {
+                    if let oldKey = _oldKey where oldKey == UD_DATA {
+                        key = UD_DATA
+                    }else {
+                        print("******不是默认key")
+                    }
+                }
             }else {
-                //        获取传入值,如果设置了，则使用，否者设置为原始的自己的名字
+                //获取传入值,如果设置了，则使用，否者设置为原始的自己的名字
                 if let oldkey = _oldKey {
                     key = oldkey
                 }else {
@@ -369,6 +388,8 @@ extension CalendarAddViewController {
         if key == UD_DATA {
             if isAddVC {
                 key += getName()
+            }else {
+                print("=====是默认key")
             }
         }else{
             if isAddVC {
@@ -377,16 +398,21 @@ extension CalendarAddViewController {
                     key += getName()
                 }
             }else {//1修改后的名没变，2修改后的名跟之前的重复.3正常
-                if key == _oldKey {//1修改后的名没变，
-                    
-                }else if key != _oldKey {
-                    let allKeys = CalendarData.getAllKeys()
-                    if let _ = allKeys?.contains(key) {
-                        key += getName()//2修改后的名跟之前的重复.
-                    }else {//3正常
+                if let old = _oldKey {
+                    if old == key {//1修改后的名没变，
+                        print("修改后，名字没变")
+                    }else {//修改后名变了
+                        CalendarData.removeDataByKey(old)//移除原有key对应的value
+                        let allKeys = CalendarData.getAllKeys()
+                        if let flag  = allKeys?.contains(key)  where flag == true {
+                            key += getName()//2修改后的名跟之前的重复.
+                        }else {//3正常
+                            print("正常")
+                        }
                         
                     }
                 }
+                
                 
             }
         }
@@ -417,9 +443,9 @@ extension CalendarAddViewController {
         let dateStr = "\(date)"
         let length = dateStr.characters.count
         let start = arc4random() % UInt32(length - 5)
-        let str = (dateStr as NSString ).substringWithRange(NSRange(location:  Int(start), length : 4))
-        let random = arc4random() % 10000
-        return "_" + str + "_\(random)"
+        let str = (dateStr as NSString ).substringWithRange(NSRange(location:  Int(start), length : 2))
+        let random = arc4random() % 100
+        return str + "\(random)"
     }
 }
 
@@ -496,4 +522,3 @@ extension CalendarAddViewController : UITextFieldDelegate {
         return true
     }
 }
-

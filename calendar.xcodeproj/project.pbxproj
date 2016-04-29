@@ -51,6 +51,10 @@
 		EE5B57651BF0596100CBD024 /* TopReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5B57641BF0596100CBD024 /* TopReusableView.swift */; };
 		EE70522C1CAA49DA00A71E95 /* Cross.m in Sources */ = {isa = PBXBuildFile; fileRef = EE7052291CAA49DA00A71E95 /* Cross.m */; };
 		EE70522D1CAA49DA00A71E95 /* KYGooeyMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = EE70522B1CAA49DA00A71E95 /* KYGooeyMenu.m */; };
+		EE81547F1CCF46CE00845D15 /* CalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE81547E1CCF46CE00845D15 /* CalendarListViewController.swift */; };
+		EE8154811CCF476200845D15 /* CalendarListPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8154801CCF476200845D15 /* CalendarListPresentationController.swift */; };
+		EE8154831CCF4D8600845D15 /* CalendarListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8154821CCF4D8600845D15 /* CalendarListCollectionViewCell.swift */; };
+		EE8154B01CD06B2D00845D15 /* ProgressLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8154AF1CD06B2D00845D15 /* ProgressLabel.m */; };
 		EE89D0F21CB742BE00D25538 /* CalendarPeekViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE89D0F11CB742BE00D25538 /* CalendarPeekViewController.swift */; };
 		EE89D0F41CB74FE300D25538 /* CalendarPopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE89D0F31CB74FE300D25538 /* CalendarPopViewController.swift */; };
 		EE89D0F81CB7A81C00D25538 /* CalendarSelectTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE89D0F71CB7A81C00D25538 /* CalendarSelectTransitionDelegate.swift */; };
@@ -145,6 +149,11 @@
 		EE7052291CAA49DA00A71E95 /* Cross.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cross.m; sourceTree = "<group>"; };
 		EE70522A1CAA49DA00A71E95 /* KYGooeyMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KYGooeyMenu.h; sourceTree = "<group>"; };
 		EE70522B1CAA49DA00A71E95 /* KYGooeyMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KYGooeyMenu.m; sourceTree = "<group>"; };
+		EE81547E1CCF46CE00845D15 /* CalendarListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarListViewController.swift; path = "日历/CalendarSelectTransition/CalendarListViewController.swift"; sourceTree = "<group>"; };
+		EE8154801CCF476200845D15 /* CalendarListPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarListPresentationController.swift; path = "日历/CalendarSelectTransition/CalendarListPresentationController.swift"; sourceTree = "<group>"; };
+		EE8154821CCF4D8600845D15 /* CalendarListCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarListCollectionViewCell.swift; path = "日历/CalendarSelectTransition/CalendarListCollectionViewCell.swift"; sourceTree = "<group>"; };
+		EE8154AE1CD06B2D00845D15 /* ProgressLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressLabel.h; path = "日历/CalendarSelectTransition/ProgressLabel.h"; sourceTree = "<group>"; };
+		EE8154AF1CD06B2D00845D15 /* ProgressLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressLabel.m; path = "日历/CalendarSelectTransition/ProgressLabel.m"; sourceTree = "<group>"; };
 		EE89D0F11CB742BE00D25538 /* CalendarPeekViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarPeekViewController.swift; path = "日历/CalendarSelectTransition/CalendarPeekViewController.swift"; sourceTree = "<group>"; };
 		EE89D0F31CB74FE300D25538 /* CalendarPopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarPopViewController.swift; path = "日历/CalendarSelectTransition/CalendarPopViewController.swift"; sourceTree = "<group>"; };
 		EE89D0F71CB7A81C00D25538 /* CalendarSelectTransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarSelectTransitionDelegate.swift; path = "日历/CalendarSelectTransition/CalendarSelectTransitionDelegate.swift"; sourceTree = "<group>"; };
@@ -396,6 +405,7 @@
 				EE89D0F11CB742BE00D25538 /* CalendarPeekViewController.swift */,
 				EE89D0F31CB74FE300D25538 /* CalendarPopViewController.swift */,
 				EE89D0F71CB7A81C00D25538 /* CalendarSelectTransitionDelegate.swift */,
+				EE8154841CCF4D8B00845D15 /* list */,
 			);
 			name = "查看其他人的按钮功能";
 			sourceTree = "<group>";
@@ -444,6 +454,18 @@
 				EE70522B1CAA49DA00A71E95 /* KYGooeyMenu.m */,
 			);
 			path = KYGooeyMenu;
+			sourceTree = "<group>";
+		};
+		EE8154841CCF4D8B00845D15 /* list */ = {
+			isa = PBXGroup;
+			children = (
+				EE8154AE1CD06B2D00845D15 /* ProgressLabel.h */,
+				EE8154AF1CD06B2D00845D15 /* ProgressLabel.m */,
+				EE81547E1CCF46CE00845D15 /* CalendarListViewController.swift */,
+				EE8154801CCF476200845D15 /* CalendarListPresentationController.swift */,
+				EE8154821CCF4D8600845D15 /* CalendarListCollectionViewCell.swift */,
+			);
+			name = list;
 			sourceTree = "<group>";
 		};
 		EEBFA2371C27E86E00A1770D /* 运动 */ = {
@@ -722,6 +744,7 @@
 				EE4195F71C1D8487004F4752 /* FSCalendarUnit.m in Sources */,
 				EE123DCD1BD79130007C341B /* SettingDataPresentationController.swift in Sources */,
 				EE123A0E1BBBD823007C341B /* MainViewController.swift in Sources */,
+				EE8154B01CD06B2D00845D15 /* ProgressLabel.m in Sources */,
 				EE89D0F41CB74FE300D25538 /* CalendarPopViewController.swift in Sources */,
 				EE43A7CB1CB5F30400F12C6D /* CalendarSelectViewController.swift in Sources */,
 				EECADA031BF4672700041D98 /* HamburgerView.swift in Sources */,
@@ -730,8 +753,10 @@
 				EE89D0F81CB7A81C00D25538 /* CalendarSelectTransitionDelegate.swift in Sources */,
 				EE4195F41C1D8487004F4752 /* FSCalendar.m in Sources */,
 				EEE419651BD8CD80000DB79B /* SettingSortCollectionViewCell.swift in Sources */,
+				EE8154831CCF4D8600845D15 /* CalendarListCollectionViewCell.swift in Sources */,
 				EED5CA821BE7436A00716453 /* UINavigationBar+Awesome.m in Sources */,
 				EE5B575C1BF043D400CBD024 /* TopViewCell.swift in Sources */,
+				EE8154811CCF476200845D15 /* CalendarListPresentationController.swift in Sources */,
 				EE0E369E1CC0BDCF00DD7E77 /* CalendarAddViewController.swift in Sources */,
 				EE5B57651BF0596100CBD024 /* TopReusableView.swift in Sources */,
 				EE30A2C01BE9EB7C0022B8D0 /* CalendarViewController.swift in Sources */,
@@ -760,6 +785,7 @@
 				EE123DC81BD78D9D007C341B /* SettingDataViewController.swift in Sources */,
 				EE89D0F21CB742BE00D25538 /* CalendarPeekViewController.swift in Sources */,
 				EE2B70AB1C3DFFE50011527B /* WeatherData.swift in Sources */,
+				EE81547F1CCF46CE00845D15 /* CalendarListViewController.swift in Sources */,
 				EEBFA2391C27E8CD00A1770D /* SportViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

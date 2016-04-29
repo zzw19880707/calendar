@@ -28,6 +28,7 @@ class TopViewLayout: UICollectionViewFlowLayout {
         scrollDirection = .Horizontal
 //        两行cell最小间距
         minimumLineSpacing = 50
+        minimumInteritemSpacing = 50
     }
     
     

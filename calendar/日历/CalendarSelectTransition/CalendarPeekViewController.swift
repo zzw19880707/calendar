@@ -12,6 +12,10 @@ class CalendarPeekViewController: BaseViewController {
 
     var calendarView : FSCalendar?
     
+    
+    var hasDelete : ((key : String) -> Void)?
+    
+    var hasEdit : ((key : String )-> Void )?
     ///用于存放每个班次的类型
     var types : [String] = []
     ///存放初始日期
@@ -25,6 +29,11 @@ class CalendarPeekViewController: BaseViewController {
         }
     }
     
+    var key = UD_DATA {
+        didSet {
+            self.data = CalendarData.getDataByKey(key)
+        }
+    }
     
     @IBOutlet weak var headView: FSCalendarHeader!
     
@@ -59,18 +68,27 @@ class CalendarPeekViewController: BaseViewController {
 }
 extension CalendarPeekViewController  {
     override func previewActionItems() -> [UIPreviewActionItem] {
-        let deleItem = UIPreviewAction(title: "删除", style: .Destructive ) { (action, viewController) in
-            
-        }
+        var arr = [UIPreviewActionItem]()
+        
+        
         
         let editItem = UIPreviewAction(title: "编辑", style: .Default ) { (action, viewController) in
-            
+            self.hasEdit?(key: self.key)
         }
-        return [editItem,deleItem]
+        arr.append(editItem)
+        
+        if key != UD_DATA {
+            let deleItem = UIPreviewAction(title: "删除", style: .Destructive ) { (action, viewController) in
+                self.hasDelete?(key: self.key)
+            }
+            arr.append(deleItem)
+        }
+        return arr
     }
-    
-    
 }
+
+
+
 extension CalendarPeekViewController : FSCalendarDataSource {
     
     func initCalendarView() {

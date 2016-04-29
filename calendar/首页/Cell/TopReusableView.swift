@@ -84,7 +84,7 @@ extension TopReusableView : UIScrollViewDelegate{
 
 extension TopReusableView : UICollectionViewDataSource ,UICollectionViewDelegate ,UICollectionViewDelegateFlowLayout{
     
-        func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let imgArr = dataArr {
             return imgArr.count * CYCLE_COUNT * 2
         }
@@ -103,7 +103,6 @@ extension TopReusableView : UICollectionViewDataSource ,UICollectionViewDelegate
         let cell = self.collectionView.cellForItemAtIndexPath(indexPath)!
         let center = self.convertPoint(cell.center, fromView: self.collectionView!)
         self.showDetail?(center: center ,index: indexPath.row)
-
     }
     
 

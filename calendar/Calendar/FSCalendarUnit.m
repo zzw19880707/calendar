@@ -40,12 +40,12 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
+//        日期
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.font = [UIFont systemFontOfSize:15];
         [self addSubview:_titleLabel];
-        
+//        农历
         _subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _subtitleLabel.textAlignment = NSTextAlignmentCenter;
         _subtitleLabel.font = [UIFont systemFontOfSize:10];
@@ -138,7 +138,7 @@
                                            titleHeight);
             
             _subtitleLabel.frame = CGRectMake(0,
-                                              height-subtitleHeight,
+                                              kTitleHeight-subtitleHeight,
                                               self.fs_width,
                                               subtitleHeight);
             _subtitleLabel.textColor = [self.dataSource subtitleColorForUnit:self];

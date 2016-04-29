@@ -86,10 +86,6 @@ class  CalendarData {
             for _ in 1...2 {
                 dataArr += type
             }
-        case 5 :
-            for _ in 1...2 {
-                dataArr += type
-            }
         default :
             dataArr += type
         }
@@ -127,5 +123,14 @@ class  CalendarData {
         self.setDataByDateAndKey(UD_DATA, date: date)
     }
     
+    class func removeDataByKey (key : String){
+        let userDeafults = NSUserDefaults.standardUserDefaults()
+        var d = userDeafults.valueForKey("UD_DATA") as! [String : AnyObject]
+        if let _ = d[key] {
+            d.removeValueForKey(key)
+        }
+        userDeafults.setValue(d, forKey: "UD_DATA")
+        userDeafults.synchronize()
+    }
 }
 

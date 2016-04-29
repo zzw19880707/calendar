@@ -10,9 +10,9 @@
 
 typedef NS_ENUM(NSInteger  , CalendarMenu ){
     CalendarMenuAdd,  //添加新用户
-    CalendarMenuEdit, //编辑某一个用户
-    CalendarMenuMove,
-    CalendarMenuSub,
+//    CalendarMenuEdit, //编辑某一个用户
+//    CalendarMenuMove,
+//    CalendarMenuSub,
     CalendarMenuLook  //查看其它用户的时间表
 };
 

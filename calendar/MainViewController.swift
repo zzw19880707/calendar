@@ -79,10 +79,19 @@ class MainViewController: UIViewController,UIScrollViewDelegate {
        }
     }
     func presentSettingDataViewController(){
-        let settingStoryBoard = UIStoryboard(name: "SettingData", bundle: nil)
+//        let settingStoryBoard = UIStoryboard(name: "SettingData", bundle: nil)
+//        
+//        let settingVC = settingStoryBoard.instantiateViewControllerWithIdentifier("SettingNavViewController")
+//        presentViewController(settingVC, animated: true, completion: nil)
+        let storyboard = UIStoryboard(name: "Detail", bundle: nil)
+        let vc = storyboard.instantiateViewControllerWithIdentifier("CalendarAddViewController") as! UINavigationController
+        let v = vc.viewControllers[0] as! CalendarAddViewController
+        //跟key 有顺序，先设置是否是编辑，在设置key
+        v.isAddVC = false
+        v.key = UD_DATA
         
-        let settingVC = settingStoryBoard.instantiateViewControllerWithIdentifier("SettingNavViewController")
-        presentViewController(settingVC, animated: true, completion: nil)
+        self.presentViewController(vc, animated: true, completion: nil)
+
 
     }
     

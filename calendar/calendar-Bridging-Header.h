@@ -14,3 +14,4 @@
 #import "VOIndicatorAnimation.h"
 #import "NSDate+ZZWExtension.h"
 #import "Cross.h"
+#import "ProgressLabel.h"

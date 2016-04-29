@@ -94,7 +94,6 @@ extension CalendarSelectViewController : UIViewControllerTransitioningDelegate{
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning?{
         return SettingDataPresentationAnimationController(isPresenting: false)
     }
-    
 }
 
 extension CalendarSelectViewController : UIViewControllerPreviewingDelegate {
@@ -102,28 +101,24 @@ extension CalendarSelectViewController : UIViewControllerPreviewingDelegate {
         let btn = previewingContext.sourceView as! UIButton
         let storyboard = UIStoryboard(name: "Detail", bundle: nil)
         let vc = storyboard.instantiateViewControllerWithIdentifier("CalendarPeekViewController") as! CalendarPeekViewController
-        
         let key = btn.currentTitle
         if key == "我" {
+            
         } else {
             dataKey = key!
         }
-        vc.data = CalendarData.getDataByKey(dataKey)
+        vc.key = dataKey
         return vc
         
     }
     func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController){
         let vc = CalendarPopViewController()
         vc.key = dataKey
-        vc.transitioningDelegate = self
-        vc.modalPresentationStyle = .Custom
 
         let nav = UINavigationController(rootViewController: vc)
         nav.transitioningDelegate = self
         nav.modalPresentationStyle = .Custom
 
         self.presentViewController(nav, animated: true, completion: nil)
-        
-//        self.presentViewController(viewControllerToCommit, animated: true, completion: nil)
     }
 }

@@ -53,8 +53,16 @@ class CalendarViewController: BaseViewController {
     }
     // MARK: - Action
     func showSettingDataViewController() {
-        let mainVC = navigationController?.parentViewController as! MainViewController
-        mainVC.presentSettingDataViewController()
+//        let mainVC = navigationController?.parentViewController as! MainViewController
+//        mainVC.presentSettingDataViewController()
+        let storyboard = UIStoryboard(name: "Detail", bundle: nil)
+        let vc = storyboard.instantiateViewControllerWithIdentifier("CalendarAddViewController") as! UINavigationController
+        let v = vc.viewControllers[0] as! CalendarAddViewController
+        //跟key 有顺序，先设置是否是编辑，在设置key
+        v.isAddVC = false
+        v.key = UD_DATA
+        
+        self.presentViewController(vc, animated: true, completion: nil)
     }
     
 }
@@ -177,6 +185,20 @@ extension CalendarViewController : FSCalendarDataSource {
         if worldHoliday != "无" {
             tableData.append(worldHoliday)
         }
+        
+        
+        let allKeyArr = CalendarData.getAllKeys()
+        for key in allKeyArr! {
+            if key == UD_DATA {
+                continue
+            }
+            let type = CalendarData.getTypeByKey(key)
+            let date1 = CalendarData.getDateByKey(key)
+            
+            let index = date.getTodayTypebyCurrentDate(date1, num: type.count)
+            tableData.append("\(key) : \(type[index])")
+        }
+
     }
 }
 
@@ -195,10 +217,10 @@ extension CalendarViewController : MenuDidSelectedDelegate {
     func  initMenu()  {
         let gooeyMenu = KYGooeyMenu(origin: CGPoint(x: self.view.frame.size.width - 10 - 50  , y: self.view.frame.size.height - 120 ), andDiameter: 50 , andDelegate: self, themeColor: UIColor.redColor())
         gooeyMenu.menuDelegate = self;
-        gooeyMenu.radius = 50 / 3;//大圆的1/4
-        gooeyMenu.extraDistance = 30;
-        gooeyMenu.MenuCount = 5;
-        gooeyMenu.imgNameArr = ["calendar_add","calendar_edit","calendar_move","calendar_sub","calendar_add"]
+        gooeyMenu.radius = 50 / 3//大圆的1/4
+        gooeyMenu.extraDistance = 30
+        gooeyMenu.MenuCount = 2
+        gooeyMenu.imgNameArr = ["calendar_sub","calendar_add"]
     }
     
     func menuDidSelected(index: CalendarMenu) {
@@ -213,7 +235,12 @@ extension CalendarViewController : MenuDidSelectedDelegate {
 //            vc!.modalPresentationStyle = .Custom
             self.presentViewController(vc!, animated: true, completion: nil)
         case .Look:
-            let vc = CalendarSelectViewController()
+            var vc : UIViewController
+            if CalendarData.getAllKeys()?.count > 1 {
+                vc = (self.storyboard?.instantiateViewControllerWithIdentifier("CalendarListViewController"))!
+            }else {
+                vc = CalendarSelectViewController()
+            }
             vc.modalPresentationStyle = .Custom
             vc.transitioningDelegate = self
             self.presentViewController(vc, animated: true, completion: nil)
@@ -225,13 +252,15 @@ extension CalendarViewController : MenuDidSelectedDelegate {
 
 extension CalendarViewController : UIViewControllerTransitioningDelegate {
     func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -> UIPresentationController?{
-        return CalendarSelectTransition(presentedViewController: presented, presentingViewController: presenting)
+        if presented.isMemberOfClass(CalendarSelectViewController.classForCoder()) {
+            return CalendarSelectTransition(presentedViewController: presented, presentingViewController: presenting)
+        }
+        return CalendarListPresentationController(presentedViewController: presented, presentingViewController: presenting)
     }
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning?{
         if presented.isMemberOfClass(CalendarSelectViewController.classForCoder()) {
             return CalendarSelectTransitionDelegate(isPresenting: true)
-
         }
         return nil
     }
@@ -239,6 +268,8 @@ extension CalendarViewController : UIViewControllerTransitioningDelegate {
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning?{
         if dismissed.isMemberOfClass(CalendarSelectViewController.classForCoder()) {
             return CalendarSelectTransitionDelegate(isPresenting: false)
+        }else if dismissed.isMemberOfClass(CalendarListViewController.classForCoder()){
+            self.needReloadData()
         }
         return nil
     }

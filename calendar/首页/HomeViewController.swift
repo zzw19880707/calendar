@@ -84,8 +84,17 @@ class HomeViewController: BaseViewController ,UIScrollViewDelegate  {
 extension HomeViewController {
     // MARK: - Action
     func showSettingDataViewController() {
-        let mainVC = navigationController?.parentViewController as! MainViewController
-        mainVC.presentSettingDataViewController()
+//        let mainVC = navigationController?.parentViewController as! MainViewController
+//        mainVC.presentSettingDataViewController()
+        let storyboard = UIStoryboard(name: "Detail", bundle: nil)
+        let vc = storyboard.instantiateViewControllerWithIdentifier("CalendarAddViewController") as! UINavigationController
+        let v = vc.viewControllers[0] as! CalendarAddViewController
+        //跟key 有顺序，先设置是否是编辑，在设置key
+        v.isAddVC = false
+        v.key = UD_DATA
+        
+        self.presentViewController(vc, animated: true, completion: nil)
+
     }
     
     @IBAction func unwind(segue : UIStoryboardSegue) {}
