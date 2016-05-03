@@ -21,9 +21,9 @@ class MenuTableViewController: UITableViewController {
         menuItem(name: "日历", imageName: "menu", color: UIColor.yellowColor(), index: 1),
         menuItem(name: "天气", imageName: "menu", color: UIColor.blueColor(), index: 2),
         menuItem(name: "运动", imageName: "menu", color: UIColor.greenColor(), index: 3),
-        menuItem(name: "aaxx", imageName: "menu", color: UIColor.cyanColor(), index: 4),
-        menuItem(name: "aaxx", imageName: "menu", color: UIColor.orangeColor(), index: 5),
-        menuItem(name: "aaxx", imageName: "menu", color: UIColor.brownColor(), index: 6),
+//        menuItem(name: "aaxx", imageName: "menu", color: UIColor.cyanColor(), index: 4),
+//        menuItem(name: "aaxx", imageName: "menu", color: UIColor.orangeColor(), index: 5),
+        menuItem(name: "设置", imageName: "menu", color: UIColor.brownColor(), index: 4),
     ]
 
     
@@ -35,7 +35,7 @@ class MenuTableViewController: UITableViewController {
         navigationController?.navigationBar.barTintColor = dataArr[0].color
 
         
-        let height = ( UIScreen.mainScreen().bounds.size.height - 64 ) / 7.0
+        let height = ( UIScreen.mainScreen().bounds.size.height - 64 ) / CGFloat(dataArr.count)
         tableView.rowHeight = height
         tableView.estimatedRowHeight = height
         tableView.separatorStyle = .None

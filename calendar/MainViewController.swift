@@ -50,17 +50,18 @@ class MainViewController: UIViewController,UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         initViewController()
+        bgScrollView.decelerationRate = 0
     }
 
     ///初始化对应的各个视图
     func initViewController() {
-        var nameArr = Array.init(count: 6, repeatedValue: "BaseViewController")
+        var nameArr = Array.init(count: 4, repeatedValue: "BaseViewController")
         nameArr[0] = "CalendarViewController"
         nameArr[1] = "WeatherViewController"
         nameArr[2] = "SportViewController"
         let baseNavigation = storyboard?.instantiateViewControllerWithIdentifier("Detail") as! UINavigationController
         let detailStoryboard = baseNavigation.topViewController?.storyboard
-        for index in 0...5 {
+        for index in 0...3 {
             let identifier = nameArr[index]
             let viewcontroller = detailStoryboard?.instantiateViewControllerWithIdentifier(identifier) as! BaseViewController
             viewControllersArr.append(viewcontroller)
@@ -78,6 +79,7 @@ class MainViewController: UIViewController,UIScrollViewDelegate {
             presentSettingDataViewController()
        }
     }
+//    设置页面
     func presentSettingDataViewController(){
 //        let settingStoryBoard = UIStoryboard(name: "SettingData", bundle: nil)
 //        
@@ -127,25 +129,16 @@ class MainViewController: UIViewController,UIScrollViewDelegate {
         return CATransform3DConcat(rotateTransform, translateTransform)
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if scrollView.contentOffset.x == 0  {
-            var index = currentItem.index
-            if index == 6{
-                index = 0
-            }else {
-                index += 1
-            }
-            menuTableViewController?.showController(index)
-        }
-    }
+    
     
     // MARK: - UIScrollViewDelegate
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        
+
         ///根据偏移量 做动画效果
         let multiplier = 1.0 / CGRectGetWidth(menuView.bounds)
         let offset = scrollView.contentOffset.x * multiplier
         let fraction = 1.0 - offset
+
         menuView.layer.transform = transformForFraction(fraction)
         menuView.alpha = fraction
         
@@ -155,13 +148,33 @@ class MainViewController: UIViewController,UIScrollViewDelegate {
                 rotatingView.rotate(fraction)
             }
         }
-        
-        scrollView.pagingEnabled = scrollView.contentOffset.x < (scrollView.contentSize.width - CGRectGetWidth(scrollView.frame))
-        
+//        scrollView.pagingEnabled = true
+//        scrollView.pagingEnabled = scrollView.contentOffset.x  < (scrollView.contentSize.width - CGRectGetWidth(scrollView.frame))
         let menuOffset = CGRectGetWidth(menuView.bounds)
         showingMenu = !CGPointEqualToPoint(CGPoint(x: menuOffset, y: 0), scrollView.contentOffset)
        
     }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+        let contentOff_X = scrollView.contentOffset.x
+        if contentOff_X < 3  {
+            
+            self.hideOrShowMenu(true, animated: true)
+        }else if contentOff_X >= 3 && contentOff_X < 80 {
+            var index = currentItem.index
+            if index == 4{
+                index = 0
+            }else {
+                index += 1
+            }
+            menuTableViewController?.showController(index)
+        }else {
+            self.hideOrShowMenu(false , animated: true)
+        }
+       
+    }
+    
     
     
     // MARK: - Method
@@ -184,7 +197,6 @@ class MainViewController: UIViewController,UIScrollViewDelegate {
             rootVC.view.backgroundColor = currentItem.color
             bgScrollView.subviews[0].backgroundColor = currentItem.color
             viewControllersArr.insert(rootVC, atIndex: 0)
-
         } else if segue.identifier == "MenuViewSegue" {
             let navigationController = segue.destinationViewController as! UINavigationController
             menuTableViewController = navigationController.topViewController as? MenuTableViewController
