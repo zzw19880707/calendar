@@ -50,6 +50,8 @@ class CalendarViewController: BaseViewController {
         types = data[calDNewType] as! [String]
         beginDate = data[calDDate] as? NSDate
         self.initCalendarView()
+        self.updateTableData(NSDate())
+        tableView.reloadData()
     }
     // MARK: - Action
     func showSettingDataViewController() {
@@ -76,6 +78,13 @@ extension CalendarViewController : UITableViewDelegate {
         cell.separatorInset = UIEdgeInsetsZero
     }
     
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !self.isMemberOfClass(CalendarViewController.self){
+            if scrollView.contentOffset.y > 45 {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+    }
 }
 
 extension CalendarViewController : UITableViewDataSource  {
@@ -243,9 +252,7 @@ extension CalendarViewController : MenuDidSelectedDelegate {
             }
             vc.modalPresentationStyle = .Custom
             vc.transitioningDelegate = self
-            self.presentViewController(vc, animated: true, completion: nil)
-        default: break
-            
+            self.presentViewController(vc, animated: true, completion: nil)            
         }
     }
 }
