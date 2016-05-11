@@ -140,6 +140,10 @@ class CalendarAddViewController: BaseViewController {
         self.view.addSubview(addBtn)
         
         
+//        编辑双击手势
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(editBtnText(_:)))
+        doubleTap.numberOfTapsRequired = 2
+        calendarView.addGestureRecognizer(doubleTap)
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -269,6 +273,23 @@ extension CalendarAddViewController {
 }
     // MARK: - Action
 extension CalendarAddViewController {
+    //编辑
+    func editBtnText(tap : UITapGestureRecognizer ) -> Void {
+        if let indexPath = calendarView.indexPathForItemAtPoint(tap.locationInView(calendarView)) {
+            let alertController = UIAlertController.init(title: "请修改新的班次名称", message: nil, preferredStyle: .Alert)
+            alertController.addTextFieldWithConfigurationHandler { (textfield1:UITextField) -> Void in
+                textfield1.placeholder = "班次名应少于3个字"
+                textfield1.text = self.dataArr[indexPath.row]
+            }
+            alertController.addAction(UIAlertAction.init(title: "确定", style: .Default, handler: { [weak alertController ] (UIAlertAction) -> Void in
+                if let alert = alertController {
+                    self.updateTextField(alert.textFields![0].text, index: indexPath.row)
+                }
+            }))
+            presentViewController(alertController, animated: true, completion: nil)
+        }
+    }
+    
     
     func tapGesture (gesture : UITapGestureRecognizer) -> Void {
         self.textField.resignFirstResponder()
@@ -325,18 +346,22 @@ extension CalendarAddViewController {
         }
         alertController.addAction(UIAlertAction.init(title: "确定", style: .Default, handler: { [weak alertController ] (UIAlertAction) -> Void in
             if let alert = alertController {
-                self.updateTextField(alert.textFields![0].text)
+                self.updateTextField(alert.textFields![0].text ,index:  -1 )
             }
         }))
         presentViewController(alertController, animated: true, completion: nil)
     }
 
-    func updateTextField(string   : String?){
+    func updateTextField(string   : String? , index : Int){
         if let text = string {
             let length = text.characters.count
             if length < 3 && length > 0 {
                 if dataArr.count < 8 {
-                    dataArr += [text]
+                    if index < 0  {
+                        dataArr += [text]
+                    }else {
+                        dataArr[index] = text
+                    }
                     calendarView.reloadData()
                 }else {
                     alertMessage("最多只能有8个班次")
