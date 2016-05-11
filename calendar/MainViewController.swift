@@ -156,10 +156,17 @@ class MainViewController: UIViewController,UIScrollViewDelegate {
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        
+        if !decelerate {
+            zzw_scrollViewDidEndDecelerating(scrollView)
+        }
+    }
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        zzw_scrollViewDidEndDecelerating(scrollView)
+    }
+    
+    func zzw_scrollViewDidEndDecelerating(scrollView: UIScrollView) -> Void{
         let contentOff_X = scrollView.contentOffset.x
         if contentOff_X < 3  {
-            
             self.hideOrShowMenu(true, animated: true)
         }else if contentOff_X >= 3 && contentOff_X < 80 {
             var index = currentItem.index
@@ -172,9 +179,7 @@ class MainViewController: UIViewController,UIScrollViewDelegate {
         }else {
             self.hideOrShowMenu(false , animated: true)
         }
-       
     }
-    
     
     
     // MARK: - Method
