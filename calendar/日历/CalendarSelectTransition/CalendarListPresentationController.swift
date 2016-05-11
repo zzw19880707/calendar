@@ -15,15 +15,22 @@ class CalendarListPresentationController: UIPresentationController {
     override func presentationTransitionWillBegin(){
         
         let tapG = UITapGestureRecognizer(target: self, action: #selector(tapAction))
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
-        blurView.frame = CGRect(x: 100, y: 100, width: 300, height: 300)
+        
+        
+
         //半模糊背景
         let contentView = UIVisualEffectView()
-        contentView.effect = UIBlurEffect(style: .Light)
+        contentView.effect = UIBlurEffect(style: .Dark)
         contentView.frame =  self.containerView!.bounds
         contentView.alpha = 0.4
         self.containerView!.addSubview(contentView)
-        self.containerView!.addGestureRecognizer(tapG)
+        
+        let view = UIView()
+        view.frame = CGRect(origin: self.containerView!.bounds.origin, size: CGSize(width: UIScreen.mainScreen().bounds.size.width , height: listViewHeight ))
+        self.containerView!.addSubview(view)
+        view.addGestureRecognizer(tapG)
+        
+        
         
     }
     
