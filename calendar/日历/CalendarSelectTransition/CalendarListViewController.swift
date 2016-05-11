@@ -37,6 +37,9 @@ class CalendarListViewController: BaseViewController {
         super.viewDidLoad()
         self.reloadData()
 
+        let tap = UITapGestureRecognizer (target: self , action: #selector(tapAction))
+        tap.delegate = self
+        collection.addGestureRecognizer(tap)
         let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongGesture(_:)))
         collection.addGestureRecognizer(longGesture)
     }
@@ -53,6 +56,10 @@ class CalendarListViewController: BaseViewController {
 
     // MARK: - Action
 extension CalendarListViewController{
+    
+    func tapAction() -> Void {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     //    移动
     func handleLongGesture(gesture: UILongPressGestureRecognizer) {
         switch(gesture.state) {
@@ -343,5 +350,14 @@ extension CalendarListViewController : UIScrollViewDelegate {
             currentIndex = Int(index) % data.count
             collection!.scrollToItemAtIndexPath(NSIndexPath(forRow:  data.count * CYCLE_COUNT + currentIndex , inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
         }
+    }
+}
+
+extension CalendarListViewController : UIGestureRecognizerDelegate{
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool{
+        if let _ = collection.indexPathForItemAtPoint(gestureRecognizer.locationInView(collection)) {
+            return false
+        }
+        return true
     }
 }

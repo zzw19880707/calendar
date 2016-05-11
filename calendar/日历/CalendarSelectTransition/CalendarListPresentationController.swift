@@ -26,7 +26,7 @@ class CalendarListPresentationController: UIPresentationController {
         self.containerView!.addSubview(contentView)
         
         let view = UIView()
-        view.frame = CGRect(origin: self.containerView!.bounds.origin, size: CGSize(width: UIScreen.mainScreen().bounds.size.width , height: listViewHeight ))
+        view.frame = CGRect(origin: self.containerView!.bounds.origin, size: CGSize(width: UIScreen.mainScreen().bounds.size.width , height:UIScreen.mainScreen().bounds.size.height - listViewHeight ))
         self.containerView!.addSubview(view)
         view.addGestureRecognizer(tapG)
         
@@ -38,7 +38,9 @@ class CalendarListPresentationController: UIPresentationController {
         
     }
     override func dismissalTransitionWillBegin() {
-        
+        for view  in self.containerView!.subviews {
+            view.removeFromSuperview()
+        }
     }
     override func dismissalTransitionDidEnd(completed: Bool){
         
