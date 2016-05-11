@@ -68,7 +68,7 @@
                                 </cells>
                                 <connections>
                                     <outlet property="dataSource" destination="Nea-Bh-Agg" id="AwP-Bi-Y0H"/>
-                                    <outlet property="delegate" destination="Nea-Bh-Agg" id="S1T-R2-mAr"/>
+                                    <outlet property="delegate" destination="Nea-Bh-Agg" id="Ovu-4B-QkK"/>
                                 </connections>
                             </collectionView>
                         </subviews>

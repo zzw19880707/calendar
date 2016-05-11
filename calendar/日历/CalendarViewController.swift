@@ -80,7 +80,7 @@ extension CalendarViewController : UITableViewDelegate {
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !self.isMemberOfClass(CalendarViewController.self){
-            if scrollView.contentOffset.y > 45 {
+            if scrollView.contentOffset.y > 45 || scrollView.contentOffset.y < -45 {
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
         }

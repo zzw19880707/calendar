@@ -22,12 +22,16 @@ class CalendarListViewController: BaseViewController {
     var moveView : UIView?
     /// 移动时的背景视图，可以做修改和删除操作
     var moveBgView : UIView?
-    ///移动时选中的cell对应的索引
+    ///移动时选中的cell对应的索引    //或者点击时
     var selectCellIndexPath : NSIndexPath?
     
     var beginTouchPoint : CGPoint?
     var currentType = [String]()
     @IBOutlet weak var collection: UICollectionView!
+    
+    /// 用于页面关闭时，动画用
+    var selectCellFrame = CGRectZero
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -286,21 +290,52 @@ extension CalendarListViewController : UIViewControllerPreviewingDelegate {
 }
 
 extension CalendarListViewController : UIViewControllerTransitioningDelegate{
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning?{
-        self.reloadData()
-        return SettingDataPresentationAnimationController(isPresenting: false)
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        if let _ = selectCellIndexPath {
+            return FlipTransition(presenting: true)
+        }
+        return nil
     }
     
-}
-extension CalendarListViewController : UICollectionViewDelegate {
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
-        let index = indexPath.row % allKeyArr!.count
-        
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning?{
+        self.reloadData()
+        if let _ = selectCellIndexPath {
+            return FlipTransition(presenting: false )
+        }else {
+            return SettingDataPresentationAnimationController(isPresenting: false)
+        }
     }
 }
-
+extension CalendarListViewController : UICollectionViewDelegate {
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
+        let index = indexPath.row % allKeyArr!.count
+        let key = allKeyArr![index]
+        
+        let vc = CalendarPopViewController()
+        vc.key = key
+        let nav = UINavigationController(rootViewController: vc)
+        nav.transitioningDelegate = self
+        nav.modalPresentationStyle = .Custom
+        
+        selectCellIndexPath = indexPath
+        selectCellFrame = view.convertRect(collectionView.cellForItemAtIndexPath(indexPath)!.frame , fromView: self.collection)
+        
+        self.presentViewController(nav, animated: true, completion: nil)
+    }
+}
 extension CalendarListViewController : UIScrollViewDelegate {
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            decelerateAction(scrollView)
+        }
+    }
     func scrollViewDidEndDecelerating(scrollView: UIScrollView){
+        decelerateAction(scrollView)
+    }
+    
+    func decelerateAction(scrollView: UIScrollView) -> Void {
         var currentIndex = 0
         let index = (scrollView.contentOffset.x - 50 ) / ( UIScreen.mainScreen().bounds.width / 3 + 50) + 1
         

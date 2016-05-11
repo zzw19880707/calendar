@@ -60,6 +60,7 @@
 		EE89D0F81CB7A81C00D25538 /* CalendarSelectTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE89D0F71CB7A81C00D25538 /* CalendarSelectTransitionDelegate.swift */; };
 		EE921D7D1C214F6400CA09F2 /* LunarCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = EE921D7C1C214F6400CA09F2 /* LunarCalendar.m */; };
 		EEBFA2391C27E8CD00A1770D /* SportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBFA2381C27E8CD00A1770D /* SportViewController.swift */; };
+		EEC040021CD885510089BDAF /* FlipTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC03FFF1CD885510089BDAF /* FlipTransition.m */; };
 		EECAD9FE1BF4603A00041D98 /* ProfileButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECAD9FD1BF4603A00041D98 /* ProfileButton.swift */; };
 		EECADA021BF4672700041D98 /* CircularRevealAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECADA001BF4672700041D98 /* CircularRevealAnimator.swift */; };
 		EECADA031BF4672700041D98 /* HamburgerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECADA011BF4672700041D98 /* HamburgerView.swift */; };
@@ -161,6 +162,8 @@
 		EE921D7C1C214F6400CA09F2 /* LunarCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LunarCalendar.m; sourceTree = "<group>"; };
 		EEBFA2381C27E8CD00A1770D /* SportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SportViewController.swift; path = "运动/SportViewController.swift"; sourceTree = "<group>"; };
 		EEBFA23C1C27EA4400A1770D /* calendar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = calendar.entitlements; sourceTree = "<group>"; };
+		EEC03FFE1CD885510089BDAF /* FlipTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlipTransition.h; sourceTree = "<group>"; };
+		EEC03FFF1CD885510089BDAF /* FlipTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlipTransition.m; sourceTree = "<group>"; };
 		EECAD9FD1BF4603A00041D98 /* ProfileButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileButton.swift; path = View/ProfileButton.swift; sourceTree = "<group>"; };
 		EECADA001BF4672700041D98 /* CircularRevealAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CircularRevealAnimator.swift; path = View/CircularRevealAnimator.swift; sourceTree = "<group>"; };
 		EECADA011BF4672700041D98 /* HamburgerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HamburgerView.swift; path = View/HamburgerView.swift; sourceTree = "<group>"; };
@@ -229,13 +232,6 @@
 				EE0E369D1CC0BDCF00DD7E77 /* CalendarAddViewController.swift */,
 			);
 			name = "添加其他人";
-			sourceTree = "<group>";
-		};
-		EE0E369F1CC4A6F200DD7E77 /* 编辑 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "编辑";
 			sourceTree = "<group>";
 		};
 		EE0E36A21CC6062000DD7E77 /* animate */ = {
@@ -326,7 +322,6 @@
 		EE30A2BE1BE9EB270022B8D0 /* 日历 */ = {
 			isa = PBXGroup;
 			children = (
-				EE0E369F1CC4A6F200DD7E77 /* 编辑 */,
 				EE0E369C1CC0BD5500DD7E77 /* 添加其他人 */,
 				EE43A7A21CB4BC0400F12C6D /* 查看其他人的按钮功能 */,
 				EE43A7581CB49ADB00F12C6D /* LHCustom */,
@@ -459,6 +454,7 @@
 		EE8154841CCF4D8B00845D15 /* list */ = {
 			isa = PBXGroup;
 			children = (
+				EEC03FF91CD885510089BDAF /* 翻页切换效果 */,
 				EE8154AE1CD06B2D00845D15 /* ProgressLabel.h */,
 				EE8154AF1CD06B2D00845D15 /* ProgressLabel.m */,
 				EE81547E1CCF46CE00845D15 /* CalendarListViewController.swift */,
@@ -474,6 +470,16 @@
 				EEBFA2381C27E8CD00A1770D /* SportViewController.swift */,
 			);
 			name = "运动";
+			sourceTree = "<group>";
+		};
+		EEC03FF91CD885510089BDAF /* 翻页切换效果 */ = {
+			isa = PBXGroup;
+			children = (
+				EEC03FFE1CD885510089BDAF /* FlipTransition.h */,
+				EEC03FFF1CD885510089BDAF /* FlipTransition.m */,
+			);
+			name = "翻页切换效果";
+			path = "日历/翻页切换效果";
 			sourceTree = "<group>";
 		};
 		EECAD9FC1BF45FF800041D98 /* View */ = {
@@ -742,6 +748,7 @@
 				EE1EC8761CC9E8840004FF87 /* BucketView.swift in Sources */,
 				EE36F3891CA4C9F300F57498 /* CalendarData.swift in Sources */,
 				EE4195F71C1D8487004F4752 /* FSCalendarUnit.m in Sources */,
+				EEC040021CD885510089BDAF /* FlipTransition.m in Sources */,
 				EE123DCD1BD79130007C341B /* SettingDataPresentationController.swift in Sources */,
 				EE123A0E1BBBD823007C341B /* MainViewController.swift in Sources */,
 				EE8154B01CD06B2D00845D15 /* ProgressLabel.m in Sources */,

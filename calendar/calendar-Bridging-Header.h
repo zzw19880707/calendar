@@ -15,3 +15,5 @@
 #import "NSDate+ZZWExtension.h"
 #import "Cross.h"
 #import "ProgressLabel.h"
+//翻页切换效果
+#import "FlipTransition.h"
